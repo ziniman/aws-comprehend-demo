@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(description='Reads RSS feed and parse all items
 parser.add_argument('feed', help='RSS feed URL')
 parser.add_argument('region', default='us-east-1', nargs='?', help='Comprehend region (default=us-east-1')
 args = parser.parse_args()
-print(args)
+#print(args)
 
 comprehend = boto3.client(service_name='comprehend', region_name=args.region)
 
@@ -40,6 +40,7 @@ for obj in feed.entries:
     if title:
         print('Calling DetectSentiment for "%s"' % title)
         sentiment_response = comprehend.detect_sentiment(Text=title, LanguageCode='en')
+        phrases_response = comprehend.detect_key_phrases(Text=title, LanguageCode='en')
 
         sentiment_score = sentiment_response["SentimentScore"]
         Sentiment= str(sentiment_response['Sentiment'])
@@ -48,10 +49,18 @@ for obj in feed.entries:
         Neutral = str(sentiment_score['Neutral'])
         Mixed = str(sentiment_score['Mixed'])
 
+        key_phrases = phrases_response['KeyPhrases']
+
         colors = {'POSITIVE': bcolors.GREEN, 'NEGATIVE': bcolors.RED, 'MIXED': bcolors.BLUE}
         color = colors.get(Sentiment, bcolors.ENDC)
 
+        if key_phrases:
+            print bcolors.YELLOW + 'Key Phrases:'
+            for word in key_phrases:
+                print word['Text']
+
         output = (color + '"%s", P"%s", NG"%s", NT"%s", M"%s"' + bcolors.ENDC) % (Sentiment, Positive, Negative, Neutral, Mixed)
+
         print (output)
-        print('End of DetectSentiment\n')
-        sleep (1)
+        print('**********************\n')
+        #sleep (2)
