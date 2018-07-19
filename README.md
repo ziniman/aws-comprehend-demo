@@ -1,4 +1,5 @@
 # aws-comprehend-demo
+A set of short and simple demos for Amazon Comprehend
 
 ## detect.py
 Detects sentiment for files stored in a S3 bucket and outputs results into [output_folder] as CSV file.
