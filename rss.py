@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.7
+#!/usr/local/bin/python3.9
 
 #Reads a RSS feed and look for sentiment in title
 #Options feeds for demo
@@ -35,7 +35,7 @@ feed = feedparser.parse(args.feed)
 
 for obj in feed.entries:
     title = (obj['title'])
-    text = (obj['description'])
+    #text = (obj['description'])
 
     if title:
         print('Calling DetectSentiment for "%s"' % title)
@@ -55,9 +55,9 @@ for obj in feed.entries:
         color = colors.get(Sentiment, bcolors.ENDC)
 
         if key_phrases:
-            print bcolors.YELLOW + 'Key Phrases:'
+            print (bcolors.YELLOW + 'Key Phrases:')
             for word in key_phrases:
-                print word['Text']
+                print (word['Text'])
 
         output = (color + '"%s", P"%s", NG"%s", NT"%s", M"%s"' + bcolors.ENDC) % (Sentiment, Positive, Negative, Neutral, Mixed)
 

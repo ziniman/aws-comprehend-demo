@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.7
+#!/usr/local/bin/python3.9
 
 import tweepy
 import argparse
@@ -25,7 +25,7 @@ auth = tweepy.OAuthHandler(secrets.api_key, secrets.api_secret)
 auth.set_access_token(secrets.access_token, secrets.access_secret)
 api = tweepy.API(auth)
 
-tweets = api.search(q=args.tag, count = args.count)
+tweets = api.search_tweets(q=args.tag, count = args.count)
 comprehend = boto3.client(service_name='comprehend', region_name=args.region)
 
 posts = []
@@ -38,6 +38,8 @@ neutral = []
 colors = {'POSITIVE': bcolors.GREEN, 'NEGATIVE': bcolors.RED, 'MIXED': bcolors.BLUE}
 
 for i in range(len(tweets)):
+    #print (tweets[i])
+    #print ('\n')
     d = tweets[i].text
     ts = tweets[i].created_at
     l = tweets[i].user.location
@@ -58,4 +60,4 @@ for i in range(len(tweets)):
     #negative.append(neg)
     #neutral.append(neu)
 
-    print (color + '*********\nData: %s\nTwitt: %s\nSentiment: %s\n') % (ts, d, s)
+    print ((color + '*********\nTwitt: %s\nSentiment: %s\n') % (d, s))
