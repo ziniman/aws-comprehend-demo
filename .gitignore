@@ -2,3 +2,4 @@
 *.txt
 *.csv
 secrets.py*
+__pycache__
